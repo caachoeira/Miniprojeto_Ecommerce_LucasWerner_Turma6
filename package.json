@@ -1,0 +1,24 @@
+{
+  "name": "miniprojeto-ecommerce",
+  "version": "1.0.0",
+  "description": "Sistema de Gerenciamento de E-commerce em TypeScript - Back-End Node [T6]",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "dev": "tsx src/main.ts"
+  },
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "ecommerce",
+    "backend"
+  ],
+  "author": "Lucas Cachoeira Werner",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
