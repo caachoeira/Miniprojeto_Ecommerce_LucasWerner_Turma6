@@ -71,7 +71,7 @@ O sistema foi desenvolvido utilizando **TypeScript** e executado no ambiente **N
 
 ```text
 Miniprojeto_Ecommerce_LucasWerner_Turma6/
-├── src/
+├── src/                  # Código-fonte do motor em TypeScript (Back-End)
 │   ├── types.ts          # Interfaces e contratos de dados
 │   ├── produtos.ts       # Módulo de catálogo e estoque
 │   ├── clientes.ts       # Módulo de clientes
@@ -79,7 +79,11 @@ Miniprojeto_Ecommerce_LucasWerner_Turma6/
 │   ├── pedidos.ts        # Finalização transacional e histórico de pedidos
 │   ├── relatorios.ts     # Funções de consolidação e métricas
 │   └── main.ts           # Ponto de entrada com fluxo demonstrativo e testes de erro
-├── dist/                 # Código JavaScript gerado pelo compilador TypeScript
+├── public/               # Interface Web Interativa (Inspirada no design da Cal.com)
+│   ├── index.html        # Estrutura semântica da aplicação web
+│   ├── style.css         # Design system minimalista e responsivo
+│   └── app.js            # Lógica reativa com todas as regras de negócio
+├── dist/                 # Código JavaScript transpilado pelo compilador TypeScript
 ├── package.json          # Metadados e scripts de execução
 ├── tsconfig.json         # Configurações do compilador TypeScript
 ├── .gitignore            # Arquivos ignorados pelo controle de versão
@@ -88,41 +92,50 @@ Miniprojeto_Ecommerce_LucasWerner_Turma6/
 
 ---
 
-## ⚙️ 5. Instruções de Instalação, Compilação e Execução
+## 🖥️ 5. Como Executar a Aplicação (Duas Interfaces Disponíveis)
 
-### Pré-requisitos
+O projeto foi projetado para operar com **duas experiências de interface completas**: você pode utilizá-lo via **Terminal (CLI)** ou pela **Interface Web (HTML/CSS)** inspirada no design minimalista e moderno da [Cal.com](https://cal.com).
+
+### Opção A: Execução via Terminal / Linha de Comando (CLI)
+
+#### Pré-requisitos
 Ter o **Node.js** e o **npm** instalados na sua máquina.
 
-### Passo 1: Instalar dependências
-No terminal, dentro da pasta do projeto, execute:
-```bash
-npm install
-```
+1. **Instalar dependências:**
+   ```bash
+   npm install
+   ```
+2. **Compilar o código TypeScript:**
+   ```bash
+   npm run build
+   ```
+3. **Executar a aplicação compilada:**
+   ```bash
+   npm start
+   ```
+   *(Ou executar diretamente em modo dev com `npm run dev`)*.
 
-### Passo 2: Compilar o código TypeScript
-Para transpilar os arquivos `.ts` da pasta `src/` para JavaScript na pasta `dist/`:
-```bash
-npm run build
-```
+---
 
-### Passo 3: Executar a aplicação compilada
-Para executar a aplicação com o Node.js:
-```bash
-npm start
-```
+### Opção B: Execução via Interface Web Visual (HTML / CSS / JS)
 
-*(Opcional) Execução direta em modo desenvolvimento:*
-```bash
-npm run dev
-```
+Para quem deseja explorar o sistema de forma gráfica, interativa e com uma estética de ponta:
+
+1. Acesse a pasta `public/`.
+2. Abra o arquivo **`public/index.html`** diretamente em qualquer navegador moderno (como Google Chrome, Edge ou Firefox).
+3. **Recursos da Interface Web:**
+   * 🛍️ **Catálogo Dinâmico:** Visualização em grade com badges de disponibilidade, busca em tempo real por nome e filtro por categoria.
+   * 👥 **Seletor de Clientes:** Alterne entre os clientes pré-cadastrados ou cadastre novos clientes em tempo real.
+   * 🛒 **Carrinho em Drawer Lateral:** Adicione produtos, ajuste quantidades com limite de estoque em tempo real e consulte subtotais instantâneos.
+   * 💳 **Checkout Transacional:** Conclusão de pedidos com baixa de estoque imediata e gravação de histórico com preços congelados.
+   * 📊 **Painel de Indicadores (KPIs):** Métricas consolidadas de faturamento, total de pedidos, ticket médio e alerta de estoque crítico.
+   * 🧪 **Playground de Validações:** Botões dedicados para disparar e inspecionar visualmente as 4 situações de erro e validações do sistema com notificações *toast*.
 
 ---
 
 ## 🧪 6. Demonstração e Testes de Situações Inválidas
 
-Ao executar `npm start` ou `npm run dev`, o script [main.ts](src/main.ts) executa automaticamente o fluxo completo e apresenta saídas formatadas no terminal.
-
-O arquivo demonstra com clareza o tratamento de erros e validação em **4 situações inválidas**:
+Ao executar `npm start` ou pelo Playground da Interface Web, o sistema demonstra com clareza o tratamento de erros e validação em **4 situações inválidas**:
 1. **Tentativa de cadastrar produto com preço negativo ou $\le 0$** $\rightarrow$ Dispara exceção informativa e impede inclusão.
 2. **Tentativa de adicionar ao carrinho quantidade superior ao estoque** $\rightarrow$ Dispara erro informando a quantidade requisitada versus o saldo atual em estoque.
 3. **Tentativa de finalizar compra com carrinho vazio** $\rightarrow$ Validação impede a geração de pedido sem itens.
@@ -143,6 +156,6 @@ O arquivo demonstra com clareza o tratamento de erros e validação em **4 situa
 
 ## ⚠️ 8. Limitações Conhecidas do Sistema
 
-- **Persistência em Memória:** Os dados existem enquanto a aplicação está em execução no processo Node.js. Ao encerrar o processo, o catálogo e os pedidos retornam ao estado inicial.
-- **Ambiente Single-Thread:** O controle de concorrência é gerenciado sincronicamente pela fila de eventos do Node.js, sem travas distribuídas.
-- **Interface Console:** A interação é realizada via terminal (`console.table`, `console.log`), sem interface gráfica ou rotas HTTP/REST (conforme as diretrizes e escopo do mini-projeto).
+- **Persistência em Memória:** Os dados existem enquanto a aplicação está em execução no processo Node.js ou na sessão do navegador. Ao reiniciar, o catálogo e os pedidos retornam ao estado inicial.
+- **Ambiente Single-Thread:** O controle de concorrência é gerenciado sincronicamente pela fila de eventos do JavaScript.
+- **Independência de Camadas:** A interface HTML é autossuficiente e complementa o motor TypeScript de back-end sem violar nenhum critério ou obrigatoriedade do edital avaliativo.

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Gerenciamento de E-Commerce</title>
+  
+  <!-- Modern Clean Typography (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top App Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>E-Commerce Studio</h1>
+        </div>
+        <span class="brand-badge">Node.js Engine</span>
+      </div>
+
+      <div class="header-actions">
+        <div class="client-select-wrap">
+          <label for="selectClienteAtivo">Cliente Ativo:</label>
+          <select id="selectClienteAtivo"></select>
+        </div>
+
+        <button class="btn-cart-trigger" id="btnOpenCart" aria-label="Abrir carrinho">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+          </svg>
+          <span>Carrinho</span>
+          <span class="cart-count-badge" id="cartCountBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Modern Navigation Tabs -->
+  <nav class="app-nav">
+    <div class="nav-container">
+      <button class="nav-tab active" data-target="tabCatalogo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>
+        Catálogo de Produtos
+      </button>
+      <button class="nav-tab" data-target="tabClientes">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Clientes Cadastrados
+      </button>
+      <button class="nav-tab" data-target="tabPedidos">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
+        Histórico de Pedidos
+      </button>
+      <button class="nav-tab" data-target="tabMetricas">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        Relatórios & Indicadores
+      </button>
+      <button class="nav-tab" data-target="tabPlayground">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+        Testes & Validações
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main View Container -->
+  <main class="main-content">
+
+    <!-- 1. ABA: CATÁLOGO DE PRODUTOS -->
+    <section class="tab-panel active" id="tabCatalogo">
+      <div class="section-header">
+        <div>
+          <h2>Catálogo de Produtos</h2>
+          <p>Consulte a disponibilidade em tempo real, busque por termos e filtre por categoria.</p>
+        </div>
+        <div class="controls-bar">
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="inputBusca" placeholder="Buscar por nome do produto...">
+          </div>
+          <select id="selectCategoria" class="category-select">
+            <option value="todas">Todas as Categorias</option>
+            <option value="Periféricos">Periféricos</option>
+            <option value="Monitores">Monitores</option>
+            <option value="Áudio">Áudio</option>
+            <option value="Mobiliário">Mobiliário</option>
+          </select>
+          <button class="btn-primary" onclick="abrirModalProduto()">+ Novo Produto</button>
+        </div>
+      </div>
+
+      <div class="product-grid" id="productGrid">
+        <!-- Injetado via JS -->
+      </div>
+    </section>
+
+    <!-- 2. ABA: CLIENTES -->
+    <section class="tab-panel" id="tabClientes">
+      <div class="section-header">
+        <div>
+          <h2>Gestão de Clientes</h2>
+          <p>Base com clientes cadastrados previamente (mínimo de 3) e cadastro com validação de unicidade.</p>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; align-items: start;">
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nome Completo</th>
+                <th>E-mail</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="clientesTableBody">
+              <!-- Injetado via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Card de Cadastro Rápido -->
+        <div class="kpi-card">
+          <h3 style="font-size:1.05rem; font-weight:700; margin-bottom:1rem;">Novo Cliente</h3>
+          <form id="formNovoCliente" style="display:flex; flex-direction:column; gap:0.85rem;">
+            <div class="form-group">
+              <label>Nome Completo</label>
+              <input type="text" id="novoCliNome" placeholder="Ex: Ana Clara Lima" required>
+            </div>
+            <div class="form-group">
+              <label>Endereço de E-mail</label>
+              <input type="email" id="novoCliEmail" placeholder="ana.lima@exemplo.com" required>
+            </div>
+            <button type="submit" class="btn-primary" style="margin-top:0.5rem;">Cadastrar Cliente</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ABA: HISTÓRICO DE PEDIDOS -->
+    <section class="tab-panel" id="tabPedidos">
+      <div class="section-header">
+        <div>
+          <h2>Histórico de Pedidos</h2>
+          <p>Pedidos transacionados com preços históricos congelados e baixa atômica de estoque.</p>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID Pedido</th>
+              <th>Cliente</th>
+              <th>Itens Comprados</th>
+              <th>Valor Total</th>
+              <th>Hora da Transação</th>
+            </tr>
+          </thead>
+          <tbody id="pedidosTableBody">
+            <!-- Injetado via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. ABA: RELATÓRIOS & INDICADORES -->
+    <section class="tab-panel" id="tabMetricas">
+      <div class="section-header">
+        <div>
+          <h2>Relatórios de Vendas & Performance</h2>
+          <p>Consolidação financeira, faturamento acumulado e alertas de segurança de estoque.</p>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Faturamento Total</div>
+          <div class="kpi-value" id="metricFaturamento">R$ 0,00</div>
+          <div class="kpi-foot">Receita bruta acumulada em pedidos</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Pedidos Concluídos</div>
+          <div class="kpi-value" id="metricPedidos">0</div>
+          <div class="kpi-foot">Transações com consistência total</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Ticket Médio</div>
+          <div class="kpi-value" id="metricTicket">R$ 0,00</div>
+          <div class="kpi-foot">Valor médio por compra finalizada</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Itens Comercializados</div>
+          <div class="kpi-value" id="metricItens">0 un</div>
+          <div class="kpi-foot">Volume total de unidades baixadas</div>
+        </div>
+      </div>
+
+      <div class="kpi-card" style="border-left: 4px solid var(--badge-amber-text);">
+        <div id="alertEstoqueCritico">
+          <!-- Injetado via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ABA: PLAYGROUND DE TESTES (SITUAÇÕES INVÁLIDAS DO EDITAL) -->
+    <section class="tab-panel" id="tabPlayground">
+      <div class="section-header">
+        <div>
+          <h2>Playground de Validações e Testes de Erro</h2>
+          <p>Demonstração interativa das situações inválidas exigidas na avaliação do projeto.</p>
+        </div>
+      </div>
+
+      <div class="playground-grid">
+        <div class="playground-card">
+          <div>
+            <div class="playground-header">
+              <span class="playground-badge">Teste 1</span>
+              <h3>Preço Negativo</h3>
+            </div>
+            <p>Tenta cadastrar produto com preço &le; 0. O motor deve abortar e lançar exceção descritiva.</p>
+          </div>
+          <div>
+            <button class="btn-secondary btn-sm" onclick="testarPrecoNegativo()">Disparar Teste</button>
+            <div class="playground-result" id="resTest1">Aguardando disparo...</div>
+          </div>
+        </div>
+
+        <div class="playground-card">
+          <div>
+            <div class="playground-header">
+              <span class="playground-badge">Teste 2</span>
+              <h3>Excesso de Estoque</h3>
+            </div>
+            <p>Tenta adicionar 50 unidades da "Cadeira Ergonômica" (disponível apenas 5 no catálogo).</p>
+          </div>
+          <div>
+            <button class="btn-secondary btn-sm" onclick="testarExcessoEstoque()">Disparar Teste</button>
+            <div class="playground-result" id="resTest2">Aguardando disparo...</div>
+          </div>
+        </div>
+
+        <div class="playground-card">
+          <div>
+            <div class="playground-header">
+              <span class="playground-badge">Teste 3</span>
+              <h3>Carrinho Vazio</h3>
+            </div>
+            <p>Tenta finalizar uma transação de compra sem nenhum item adicionado ao carrinho.</p>
+          </div>
+          <div>
+            <button class="btn-secondary btn-sm" onclick="testarCarrinhoVazio()">Disparar Teste</button>
+            <div class="playground-result" id="resTest3">Aguardando disparo...</div>
+          </div>
+        </div>
+
+        <div class="playground-card">
+          <div>
+            <div class="playground-header">
+              <span class="playground-badge">Teste 4</span>
+              <h3>E-mail Duplicado</h3>
+            </div>
+            <p>Tenta cadastrar um novo cliente com o e-mail que já pertence a outro usuário.</p>
+          </div>
+          <div>
+            <button class="btn-secondary btn-sm" onclick="testarEmailDuplicado()">Disparar Teste</button>
+            <div class="playground-result" id="resTest4">Aguardando disparo...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Drawer Lateral do Carrinho de Compras (Cal.com Drawer) -->
+  <div class="drawer-backdrop" id="drawerCart">
+    <div class="drawer-panel">
+      <div class="drawer-header">
+        <h3>Carrinho de Compras</h3>
+        <button class="btn-close-drawer" id="btnCloseCart">✕</button>
+      </div>
+      <div class="drawer-body" id="drawerCartBody">
+        <!-- Injetado via JS -->
+      </div>
+      <div class="drawer-footer" id="drawerCartFooter">
+        <div class="cart-total-row">
+          <span>Total</span>
+          <span id="cartTotalDisplay">R$ 0,00</span>
+        </div>
+        <button class="btn-primary" id="btnCheckout" style="width: 100%; padding: 0.75rem;">
+          Finalizar Pedido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Cadastro de Produto -->
+  <div class="modal-backdrop" id="modalProduto">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Cadastrar Novo Produto</h3>
+        <button class="btn-close-drawer" onclick="fecharModalProduto()">✕</button>
+      </div>
+      <form id="formNovoProduto">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Nome do Produto</label>
+            <input type="text" id="novoProdNome" placeholder="Ex: Câmera 4K Ultra" required>
+          </div>
+          <div class="form-group">
+            <label>Categoria</label>
+            <select id="novoProdCat" required>
+              <option value="Periféricos">Periféricos</option>
+              <option value="Monitores">Monitores</option>
+              <option value="Áudio">Áudio</option>
+              <option value="Mobiliário">Mobiliário</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Preço Unitário (R$)</label>
+            <input type="number" id="novoProdPreco" step="0.01" min="0.01" placeholder="350.00" required>
+          </div>
+          <div class="form-group">
+            <label>Quantidade em Estoque</label>
+            <input type="number" id="novoProdEstoque" min="0" placeholder="10" required>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button type="button" class="btn-secondary" onclick="fecharModalProduto()">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar Produto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toaster Notificações Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
